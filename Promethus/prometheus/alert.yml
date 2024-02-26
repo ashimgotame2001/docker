@@ -1,0 +1,16 @@
+groups:
+#  - name: prometheus
+#    rules:
+#      - alert: InstanceDown
+#        expr: up{job="prometheus"} < 1
+#        for: 5m
+  - name: API-GATEWAY
+    rules:
+      - alert: InstanceDown
+        expr: up{job="API-GATEWAY"} < 1
+        for: 5m
+  - name: test-app
+    rules:
+      - alert: InstanceDown
+        expr: up{job="test-app"} < 1
+        for: 5m

@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  keycloak:
+    image: jboss/keycloak:latest
+    environment:
+      - DB_VENDOR=postgres
+      - DB_ADDR=postgresDb
+      - DB_DATABASE=keycloak
+      - DB_USER=keycloak
+      - DB_PASSWORD=password
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin
+      - KC_HTTP_ENABLED=true
+      - KC_HTTPS_CERTIFICATE_FILE=/etc/letsencrypt/live/wink.nexdigitalstudio.com/cert.pem
+      - KC_HTTPS_CERTIFICATE_KEY_FILE=/etc/letsencrypt/live/wink.nexdigitalstudio.com/privkey.pem
+
+    ports:
+      - "18080:8080"
+      - "8443:8443"
+    depends_on:
+      - postgresDb
+    volumes:
+      - ./certs:/opt/keycloak/certs
+
+  postgresDb:
+    image: postgres:latest
+    command: postgres -c 'max_connections=250'
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=keycloak
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=keycloak
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    restart: always
+
+volumes:
+  postgres-data:

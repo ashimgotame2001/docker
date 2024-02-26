@@ -1,0 +1,19 @@
+version: "3.8"
+services:
+  consul:
+    image: hashicorp/consul:latest
+    restart: always
+    deploy:
+      replicas: 1
+    networks:
+      - consul
+    ports:
+      - "8500:8500"
+      - "8600:8600/tcp"
+      - "8600:8600/udp"
+    volumes:
+      - .:/consul/config
+
+networks:
+  consul:
+    driver: bridge

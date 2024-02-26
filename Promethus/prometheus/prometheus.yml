@@ -1,0 +1,38 @@
+global:
+  scrape_interval:     15s # Default scrape interval
+
+rule_files:
+  - alert.yml
+
+scrape_configs:
+#  - job_name: 'prometheus' # Job to scrape Prometheus metrics
+#    scrape_interval: 5s
+#    static_configs:
+#      - targets: ['localhost:9090']
+
+  - job_name: 'API-GATEWAY'
+    metrics_path: '/actuator/prometheus' # Job to scrape application metrics
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['192.168.20.17:8000']
+
+  - job_name: 'test-app'
+#    metrics_path: '/actuator/prometheus' # Job to scrape application metrics
+    scrape_interval: 5s
+    static_configs:
+      - targets: [ 'localhost:9090' ]
+#global:
+#  scrape_interval: 30s
+#  scrape_timeout: 10s
+#
+#rule_files:
+#  - alert.yml
+#
+#scrape_configs:
+#  - job_name: services
+#    metrics_path: /metrics
+#    static_configs:
+#      - targets:
+#          - 'prometheus:9090'
+#          - 'idonotexists:564'
+#          - 'auth-server:8000'
