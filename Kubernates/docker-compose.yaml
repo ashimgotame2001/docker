@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  k3s:
+    image: rancher/k3s:v1.27.1-k3s1
+    container_name: k3s-server
+    privileged: true
+    command: server --disable traefik  # Corrected flag
+    environment:
+      - K3S_KUBECONFIG_MODE=644
+    volumes:
+      - /var/lib/rancher/k3s:/var/lib/rancher/k3s
+      - /var/run:/var/run
+      - /etc/rancher/k3s:/etc/rancher/k3s
+    ports:
+      - "6443:6443"  # Kubernetes API server
+      - "8090:8090"  # HTTP for services
+      - "443:443"    # HTTPS for services
+
